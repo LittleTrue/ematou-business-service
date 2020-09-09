@@ -1,0 +1,24 @@
+{
+    "name": "gxz/eport-wms",
+    "type": "library",
+    "keywords": [
+        "eport",
+        "eport-wms-service"
+    ],
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=5.6",
+        "guzzlehttp/guzzle": "^6.2",
+        "adbario/php-dot-notation": "^2.0",
+        "pimple/pimple": "v2.1.1",
+        "ext-json": "*"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "EPort\\EPortWmsClient\\": "src/client/",
+            "EPort\\EPortWmsService\\": "src/service/"
+        }
+    }
+}
