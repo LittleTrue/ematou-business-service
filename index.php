@@ -15,45 +15,59 @@ $ioc_con_app = new Application([
 $bankSrv = new BBCOrderService($ioc_con_app);
 
 $array = [
-    'Datas' => [
-        [
-            'Head' => [
-                'OrderNo'             => '5784936',
-                'Waybillno'           => '',
-                'EnterpriseCode'      => 'ZTO',
-                'Ordername'           => '郭富城',
-                'BuyerRegno'          => '刘德华',
-                'Orderdocid'          => '440971199701202252',
-                'Orderphone'          => '13423496176',
-                'Ordergoodtotal'      => 20,
-                'Freight'             => 0,
-                'Discount'            => 0,
-                'Tax'                 => 0,
-                'ActuralPaid'         => 20,
-                'ReceivingUserName'   => '张学友',
-                'ReceivingUserMobile' => '17304023506',
-                'ReceivingUserAddr'   => '东莞南城',
-                'ConsigneeProvince'   => '广东省',
-                'ConsigneeCity'       => '东莞市',
-                'ConsigneeArea'       => '南城区',
-                'Note'                => '',
-                'BillTemplate'        => 'YWD001',
-                // "ErrMsg" => ''
-            ],
-            'Body' => [
-                [
-                    'OrderNo'      => '5784936',
-                    'Copgno'       => 'YWD999',
-                    'Decprice'     => 20,
-                    'Gqty'         => 1,
-                    'TradeCountry' => '142',
-                    'Notes'        => '',
-                    // "ErrMsg"=> ''
-                ],
-            ],
+    'data' => [
+        'merchId'           => '123',
+        'merchOrderId'      => '202009101518',
+        'buyerIdType'       => '1',
+        'buyerIdCode'       => '440583199705234511',
+        'buyerName'         => '陈子安',
+        'buyerTel'          => '15013000000',
+        'payerIdType'       => '1',
+        'payerIdCode'       => '',
+        'payerName'         => '陈子安',
+        'payerMob'          => '15013000000',
+        'consigneeIdType'   => '1',
+        'consigneeIdCode'   => '440583199705234511',
+        'consigneeName'     => '陈子安',
+        'consigneeMob'      => '15013000000',
+        'consigneeTel'      => '15013000000',
+        'consigneeProvince' => '广东省',
+        'consigneeCity'     => '汕头市',
+        'consigneeDistrict' => '金平区',
+        'consigneeAddress'  => '1号',
+        'acturalPaid'       => '199',
+        'payTime'           => '2020-09-10 15:20:10',
+        'exprAgreementType' => '00',
+        'exprType'          => '00',
+        'exprCompId'        => 'yto',
+        'buyerBillTime'     => '2020-09-10 15:20:10',
+        'declExprFee'       => '0',
+        'declPostTax'       => '0',
+        'item'              => [
+            [
+                'sku'           => 'SKU000001',
+                'sellUnitPrice' => '199',
+                'sellQty'       => '1'
+            ]
         ],
     ],
-    'PlateCode'   => 'YWD',
-    'EntreCordNo' => 'YWD',
+    'sign'  => '',
+    'timestamp' => time(),
 ];
-print_r(json_encode($bankSrv->submitOrder($array)));
+
+// try {
+    print_r(json_encode($bankSrv->submitOrder($array)));
+// } catch (\Exception $e) {
+//     print_r(json_encode($e->getMessage()));
+// }
+
+/**
+ * 签名.
+ * @param param [签名对象]
+ */
+function sign($param)
+{
+    $string = $this->secret_key . 'data' . trim($param['data'], '"') . 'merchId' . $param['merchId'] . 'timestamp' . $param['timestamp'];
+    return strtolower(md5($string));
+}
+
