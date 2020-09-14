@@ -4,7 +4,7 @@ namespace EPort\EPortWmsClient\StoreDisplay;
 
 use EPort\EPortWmsClient\Application;
 use EPort\EPortWmsClient\Base\BaseClient;
-use EPort\EPortWmsClient\Base\MD5;
+use EPort\EPortWmsClient\Base\Exceptions\ClientError;
 
 /**
  * 门店保税展示API客户端.
@@ -26,12 +26,11 @@ class Client extends BaseClient
      * 门店保税展示现场速递进货申请单接口.
      * @throws ClientError
      */
-    public function purchaseApply(array $data, $secret_key = '')
+    public function purchaseApply(array $data)
     {
         $this->credentialValidate->setRule(
             [
                 'shopId'            => 'require|max:22',
-                'merchId'           => 'require|max:22',
                 'sinGoodsDocSn'     => 'require|max:22',
                 'consigneeName'     => 'require|max:60',
                 'consigneeMob'      => 'require|max:20',
@@ -63,22 +62,17 @@ class Client extends BaseClient
             }
         }
 
-        ksort($data);
-        $send_data = [
-            'data'      => json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'timestamp' => time(),
-            'merchId'   => $data['merchId'],
-        ];
+        $data['merchId'] = $this->app['config']->get('merchId');
 
-        //获取签名
-        $md5_sign          = new MD5();
-        $sign_string       = $md5_sign->MD5Sign($send_data, $secret_key);
-        $send_data['sign'] = $sign_string;
-        var_dump($send_data);
+        $this->setUri('shop/bdd/cb/ingoods');
 
-        $this->setParams($send_data);
+        $result = $this->postData($data);
 
-        var_dump($this->httpPostJson('shop/bdd/cb/ingoods'));
+        if (0 != $result['code']) {
+            throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
+        }
+
+        return $result['data'];
     }
 
     /**
@@ -86,12 +80,11 @@ class Client extends BaseClient
      *
      * @throws ClientError
      */
-    public function returnApply(array $data, $secret_key = '')
+    public function returnApply(array $data)
     {
         $this->credentialValidate->setRule(
             [
                 'shopId'           => 'require|max:22',
-                'merchId'          => 'require|max:22',
                 'merchReturnDocSn' => 'require|max:22',
                 'grossWeight'      => 'require',
                 'billTime'         => 'require|max:32',
@@ -118,33 +111,27 @@ class Client extends BaseClient
             }
         }
 
-        ksort($data);
-        $send_data = [
-            'data'      => json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'timestamp' => time(),
-            'merchId'   => $data['merchId'],
-        ];
+        $data['merchId'] = $this->app['config']->get('merchId');
 
-        //获取签名
-        $md5_sign          = new MD5();
-        $sign_string       = $md5_sign->MD5Sign($send_data, $secret_key);
-        $send_data['sign'] = $sign_string;
-        var_dump($send_data);
+        $this->setUri('shop/bdd/cb/returngoods');
 
-        $this->setParams($send_data);
+        $result = $this->postData($data);
 
-        var_dump($this->httpPostJson('shop/bdd/cb/returngoods'));
+        if (0 != $result['code']) {
+            throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
+        }
+
+        return $result['data'];
     }
 
     /**
      * 门店保税展示现场速递货品转移申请单接口.
      * @throws ClientError
      */
-    public function goodsTransfer(array $data, $secret_key = '')
+    public function goodsTransfer(array $data)
     {
         $this->credentialValidate->setRule(
             [
-                'merchId'         => 'require|max:22',
                 'merchTransDocSn' => 'require|max:22',
                 'rollOutShopId'   => 'require|max:22',
                 'rollInShopId'    => 'require|max:22',
@@ -171,34 +158,28 @@ class Client extends BaseClient
             }
         }
 
-        ksort($data);
-        $send_data = [
-            'data'      => json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'timestamp' => time(),
-            'merchId'   => $data['merchId'],
-        ];
+        $data['merchId'] = $this->app['config']->get('merchId');
 
-        //获取签名
-        $md5_sign          = new MD5();
-        $sign_string       = $md5_sign->MD5Sign($send_data, $secret_key);
-        $send_data['sign'] = $sign_string;
-        var_dump($send_data);
+        $this->setUri('shop/bdd/cb/transgoods');
 
-        $this->setParams($send_data);
+        $result = $this->postData($data);
 
-        var_dump($this->httpPostJson('shop/bdd/cb/transgoods'));
+        if (0 != $result['code']) {
+            throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
+        }
+
+        return $result['data'];
     }
 
     /**
      * 门店保税展示现场速递订单接口.
      * @throws ClientError
      */
-    public function orderApply(array $data, $secret_key = '')
+    public function orderApply(array $data)
     {
         $this->credentialValidate->setRule(
             [
                 'shopId'            => 'require|max:22',
-                'merchId'           => 'require|max:22',
                 'merchOrderId'      => 'require|max:32',
                 'buyerIdType'       => 'require|in:1,2',
                 'buyerIdCode'       => 'require|max:60',
@@ -244,22 +225,17 @@ class Client extends BaseClient
 
         $this->checkorderApply($data['item'], $data);
 
-        ksort($data);
-        $send_data = [
-            'data'      => json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'timestamp' => time(),
-            'merchId'   => $data['merchId'],
-        ];
+        $data['merchId'] = $this->app['config']->get('merchId');
 
-        //获取签名
-        $md5_sign          = new MD5();
-        $sign_string       = $md5_sign->MD5Sign($send_data, $secret_key);
-        $send_data['sign'] = $sign_string;
-        var_dump($send_data);
+        $this->setUri('shop/bdd/cb/order');
 
-        $this->setParams($send_data);
+        $result = $this->postData($data);
 
-        var_dump($this->httpPostJson('shop/bdd/cb/order'));
+        if (0 != $result['code']) {
+            throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
+        }
+
+        return $result['data'];
     }
 
     /**

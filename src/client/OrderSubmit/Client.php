@@ -5,7 +5,6 @@ namespace EPort\EPortWmsClient\OrderSubmit;
 use EPort\EPortWmsClient\Application;
 use EPort\EPortWmsClient\Base\BaseClient;
 use EPort\EPortWmsClient\Base\Exceptions\ClientError;
-use EPort\EPortWmsClient\Base\MD5;
 
 /**
  * 订单导入API客户端.
@@ -28,11 +27,10 @@ class Client extends BaseClient
      *
      * @throws ClientError
      */
-    public function submitOrder(array $data, $secret_key = '')
+    public function submitOrder(array $data)
     {
         $this->credentialValidate->setRule(
             [
-                'merchId'           => 'require|max:22',
                 'merchOrderId'      => 'max:32',
                 'buyerIdType'       => 'require|max:1|in:1,2',
                 'buyerIdCode'       => 'require|max:60',
@@ -84,22 +82,17 @@ class Client extends BaseClient
 
         $this->checkOrderInfo($data['item'], $data);
 
-        ksort($data);
-        $send_data = [
-            'data'      => json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'timestamp' => time(),
-            'merchId'   => $data['merchId'],
-        ];
+        $data['merchId'] = $this->app['config']->get('merchId');
 
-        //获取签名
-        $md5_sign          = new MD5();
-        $sign_string       = $md5_sign->MD5Sign($send_data, $secret_key);
-        $send_data['sign'] = $sign_string;
-        var_dump($send_data);
+        $this->setUri('bds/order');
 
-        $this->setParams($send_data);
+        $result = $this->postData($data);
 
-        var_dump($this->httpPostJson('bds/order'));
+        if (0 != $result['code']) {
+            throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
+        }
+
+        return $result['data'];
     }
 
     /**

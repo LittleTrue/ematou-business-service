@@ -25,5 +25,10 @@ class ServiceProvider implements ServiceProviderInterface
         $app['credential'] = function ($app) {
             return new Credential($app);
         };
+
+        //注册发送服务
+        $app['md5'] = function ($app) {
+            return new MD5($app);
+        };
     }
 }

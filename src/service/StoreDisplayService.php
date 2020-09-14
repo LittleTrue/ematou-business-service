@@ -25,17 +25,13 @@ class StoreDisplayService
      * @throws ClientError
      * @throws \Exception
      */
-    public function purchaseApply(array $infos, $key = '')
+    public function purchaseApply(array $infos)
     {
         if (empty($infos)) {
             throw new ClientError('参数缺失', 1000001);
         }
 
-        if (empty($key)) {
-            throw new ClientError('密钥缺失', 1000001);
-        }
-
-        return $this->_bbcDisplayClient->purchaseApply($infos, $key);
+        return $this->_bbcDisplayClient->purchaseApply($infos);
     }
 
     /**
@@ -44,17 +40,13 @@ class StoreDisplayService
      * @throws ClientError
      * @throws \Exception
      */
-    public function returnApply(array $infos, $key = '')
+    public function returnApply(array $infos)
     {
         if (empty($infos)) {
             throw new ClientError('参数缺失', 1000001);
         }
 
-        if (empty($key)) {
-            throw new ClientError('密钥缺失', 1000001);
-        }
-
-        return $this->_bbcOrderClient->returnApply($infos, $key);
+        return $this->_bbcDisplayClient->returnApply($infos);
     }
 
     /**
@@ -63,17 +55,13 @@ class StoreDisplayService
      * @throws ClientError
      * @throws \Exception
      */
-    public function goodsTransfer(array $infos, $key = '')
+    public function goodsTransfer(array $infos)
     {
         if (empty($infos)) {
             throw new ClientError('参数缺失', 1000001);
         }
 
-        if (empty($key)) {
-            throw new ClientError('密钥缺失', 1000001);
-        }
-
-        return $this->_bbcOrderClient->goodsTransfer($infos, $key);
+        return $this->_bbcDisplayClient->goodsTransfer($infos);
     }
 
     /**
@@ -82,16 +70,12 @@ class StoreDisplayService
      * @throws ClientError
      * @throws \Exception
      */
-    public function orderApply(array $infos, $key = '')
+    public function orderApply(array $infos)
     {
         if (empty($infos)) {
             throw new ClientError('参数缺失', 1000001);
         }
 
-        if (empty($key)) {
-            throw new ClientError('密钥缺失', 1000001);
-        }
-
-        return $this->_bbcOrderClient->orderApply($infos, $key);
+        return $this->_bbcDisplayClient->orderApply($infos);
     }
 }

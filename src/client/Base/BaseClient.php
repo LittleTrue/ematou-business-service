@@ -26,6 +26,11 @@ class BaseClient
     /**
      * @var string
      */
+    protected $uri = '';
+
+    /**
+     * @var string
+     */
     protected $language = 'zh-cn';
 
     public function __construct(Application $app)
@@ -41,6 +46,14 @@ class BaseClient
     public function setParams(array $json)
     {
         $this->json = $json;
+    }
+
+    /**
+     * Set uri.
+     */
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
     }
 
     /**
@@ -86,6 +99,17 @@ class BaseClient
     }
 
     /**
+     * @throws ClientError
+     */
+    protected function postData($data)
+    {
+        $options[RequestOptions::JSON]    = $this->app['md5']->getRequestParams($data);
+        $options[RequestOptions::HEADERS] = $this->app['md5']->getRequestHeaders();
+
+        return $this->request('POST', $this->uri, $options);
+    }
+
+    /**
      * set Headers.
      *
      * @return array
@@ -97,8 +121,8 @@ class BaseClient
         $options[RequestOptions::HEADERS] = [
             'Content-Type' => 'application/json',
             'timestamp'    => $time,
-            'Account'      => $this->app['config']->get('Account'),
-            'Password'     => $this->app['config']->get('Password'),
+            // 'Account'      => $this->app['config']->get('Account'),
+            // 'Password'     => $this->app['config']->get('Password'),
         ];
         return $options;
     }

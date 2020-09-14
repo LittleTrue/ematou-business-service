@@ -7,9 +7,9 @@ use EPort\EPortWmsService\BBCOrderService;
 use EPort\EPortWmsService\StoreDisplayService;
 
 $ioc_con_app = new Application([
-    'BaseUri'  => 'http://wstest.ds-bay.com/al/',
-    'Account'  => 'ewms',
-    'Password' => '888888',
+    'BaseUri'   => 'http://wstest.ds-bay.com/al/',
+    'secretKey' => 'hzxCjtGlY9d5AJj9',
+    'merchId'   => 'mhbs690141244434452480',
 ]);
 
 //-----------------------------------------------------------------------------------
@@ -17,84 +17,82 @@ $ioc_con_app = new Application([
 //-----------------------------------------------------------------------------------
 $bankSrv = new BBCOrderService($ioc_con_app);
 
-    $data = [
-        'merchId'           => 'mhbs690141244434452480',
-        'merchOrderId'      => '202009101518',
-        'buyerIdType'       => '1',
-        'buyerIdCode'       => '440583199705234511',
-        'buyerName'         => '陈子安',
-        'buyerTel'          => '15013000000',
-        'payerIdType'       => '1',
-        'payerIdCode'       => '',
-        'payerName'         => '陈子安',
-        'payerMob'          => '15013000000',
-        'consigneeIdType'   => '1',
-        'consigneeIdCode'   => '440583199705234511',
-        'consigneeName'     => '陈子安',
-        'consigneeMob'      => '15013000000',
-        'consigneeTel'      => '15013000000',
-        'consigneeProvince' => '广东省',
-        'consigneeCity'     => '汕头市',
-        'consigneeDistrict' => '金平区',
-        'consigneeAddress'  => '1号',
-        'acturalPaid'       => '199',
-        'payTime'           => '2020-09-10 15:20:10',
-        'exprAgreementType' => '00',
-        'exprType'          => '00',
-        'exprCompId'        => 'yto',
-        'buyerBillTime'     => '2020-09-10 15:20:10',
-        'declExprFee'       => '0',
-        'declPostTax'       => '0',
-        'item'              => [
-            [
-                'sku'           => 'SKU000001',
-                'sellUnitPrice' => '199',
-                'sellQty'       => '1',
-            ],
+$data = [
+    'merchOrderId'      => '202009101518',
+    'buyerIdType'       => '1',
+    'buyerIdCode'       => '440583199705234511',
+    'buyerName'         => '陈子安',
+    'buyerTel'          => '15013000000',
+    'payerIdType'       => '1',
+    'payerIdCode'       => '',
+    'payerName'         => '陈子安',
+    'payerMob'          => '15013000000',
+    'consigneeIdType'   => '1',
+    'consigneeIdCode'   => '440583199705234511',
+    'consigneeName'     => '陈子安',
+    'consigneeMob'      => '15013000000',
+    'consigneeTel'      => '15013000000',
+    'consigneeProvince' => '广东省',
+    'consigneeCity'     => '汕头市',
+    'consigneeDistrict' => '金平区',
+    'consigneeAddress'  => '1号',
+    'acturalPaid'       => '199',
+    'payTime'           => '2020-09-10 15:20:10',
+    'exprAgreementType' => '00',
+    'exprType'          => '00',
+    'exprCompId'        => 'yto',
+    'buyerBillTime'     => '2020-09-10 15:20:10',
+    'declExprFee'       => '0',
+    'declPostTax'       => '0',
+    'item'              => [
+        [
+            'sku'           => 'SKU000001',
+            'sellUnitPrice' => '199',
+            'sellQty'       => '1',
         ],
-    ];
+    ],
+];
 
-// print_r(json_encode($bankSrv->submitOrder($data, 'hzxCjtGlY9d5AJj9')));
+print_r($bankSrv->submitOrder($data));
 
 //-----------------------------------------------------------------------------------
 //门店保税展示现场速递进货申请单接口
 //-----------------------------------------------------------------------------------
 $storeDisplay = new StoreDisplayService($ioc_con_app);
 
-    $data = [
-        'merchId'               => 'mhbs690141244434452480',
-        'shopId'                => 'wbsp999219298345422848',
-        'merchName'             => '中网科技',
-        'thirdPartyMerchCode'   => '12',
-        'thirdPartyMerchName'   => 'zyl421',
-        'sinGoodsDocSn'         => '2018042413364444675',
-        'bondedCode'            => '060100',
-        'wareCode'              => 'qhbsq',
-        'consigneeIdType'       => '1',
-        'consigneeIdCode'       => '430611199211085562',
-        'consigneeName'         => '赵起胜',
-        'consigneeMob'          => '15886451545',
-        'consigneeProvinceCode' => '220000',
-        'consigneeProvince'     => '吉林省',
-        'consigneeCityCode'     => '630200',
-        'consigneeCity'         => '吉林市',
-        'consigneeDistrictCode' => '340503',
-        'consigneeDistrict'     => '龙潭区',
-        'consigneeTel'          => '13558390776',
-        'consigneeCountryCode'  => '142',
-        'consigneeAddress'      => '西丽镇大学城',
-        'consigneeZipCode'      => '430424',
-        'billTime'              => '2018-03-01 03:49:08',
-        'item'                  => [
-            [
-                'sku'        => 'ISZWKJ004915',
-                'goodsPrice' => '7.95',
-                'goodsNum'   => '3',
-            ],
+$data = [
+    'shopId'                => 'wbsp999219298345422848',
+    'merchName'             => '中网科技',
+    'thirdPartyMerchCode'   => '12',
+    'thirdPartyMerchName'   => 'zyl421',
+    'sinGoodsDocSn'         => '2018042413364444675',
+    'bondedCode'            => '060100',
+    'wareCode'              => 'qhbsq',
+    'consigneeIdType'       => '1',
+    'consigneeIdCode'       => '430611199211085562',
+    'consigneeName'         => '赵起胜',
+    'consigneeMob'          => '15886451545',
+    'consigneeProvinceCode' => '220000',
+    'consigneeProvince'     => '吉林省',
+    'consigneeCityCode'     => '630200',
+    'consigneeCity'         => '吉林市',
+    'consigneeDistrictCode' => '340503',
+    'consigneeDistrict'     => '龙潭区',
+    'consigneeTel'          => '13558390776',
+    'consigneeCountryCode'  => '142',
+    'consigneeAddress'      => '西丽镇大学城',
+    'consigneeZipCode'      => '430424',
+    'billTime'              => '2018-03-01 03:49:08',
+    'item'                  => [
+        [
+            'sku'        => 'ISZWKJ004915',
+            'goodsPrice' => '7.95',
+            'goodsNum'   => '3',
         ],
-    ];
+    ],
+];
 
-print_r(json_encode($storeDisplay->purchaseApply($data, 'hzxCjtGlY9d5AJj9')));
+// print_r($storeDisplay->purchaseApply($data));
 
 //-----------------------------------------------------------------------------------
 //门店保税展示现场速递货品转移申请单接口
@@ -102,7 +100,6 @@ print_r(json_encode($storeDisplay->purchaseApply($data, 'hzxCjtGlY9d5AJj9')));
 $storeDisplay = new StoreDisplayService($ioc_con_app);
 
 $data = [
-    'merchId'             => 'mhbs690141244434452480',
     'shopId'              => 'wbsp999219298345422848',
     'merchName'           => '中网科技',
     'thirdPartyMerchCode' => '12',
@@ -122,7 +119,7 @@ $data = [
     ],
 ];
 
-// print_r(json_encode($storeDisplay->returnApply($data, 'hzxCjtGlY9d5AJj9')));
+// print_r($storeDisplay->returnApply($data));
 
 //-----------------------------------------------------------------------------------
 //门店保税展示现场速递订单接口
@@ -130,7 +127,6 @@ $data = [
 $storeDisplay = new StoreDisplayService($ioc_con_app);
 
 $data = [
-    'merchId'             => 'mhbs690141244434452480',
     'merchName'           => '中网科技',
     'thirdPartyMerchCode' => '12',
     'thirdPartyMerchName' => 'zyl421',
@@ -146,7 +142,7 @@ $data = [
         ],
     ],
 ];
-// print_r(json_encode($storeDisplay->goodsTransfer($data, 'hzxCjtGlY9d5AJj9')));
+// print_r($storeDisplay->goodsTransfer($data));
 
 //-----------------------------------------------------------------------------------
 //门店保税展示现场速递货品返区申请单接口
@@ -155,7 +151,6 @@ $storeDisplay = new StoreDisplayService($ioc_con_app);
 
 $data = [
     'shopId'                => 'wbsp983589990844100608',
-    'merchId'               => 'mhbs690141244434452480',
     'thirdPartyMerchCode'   => '',
     'thirdPartyMerchName'   => '',
     'merchName'             => null,
@@ -184,7 +179,7 @@ $data = [
     'consigneeZipCode'      => '1515',
     'payEntCusCode'         => '4403160Z3Y',
     'payNo'                 => '2017111521001104000249622093',
-    'acturalPaid'           => 118.62000,
+    'acturalPaid'           => 34.23000,
     'payTime'               => '2017-11-15 03:15:00',
     'exprType'              => '00',
     'exprAgreementType'     => '00',
@@ -211,4 +206,4 @@ $data = [
         ],
     ],
 ];
-// print_r(json_encode($storeDisplay->orderApply($data, 'hzxCjtGlY9d5AJj9')));
+// print_r($storeDisplay->orderApply($data));
