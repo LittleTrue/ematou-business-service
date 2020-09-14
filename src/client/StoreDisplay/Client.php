@@ -242,6 +242,8 @@ class Client extends BaseClient
             }
         }
 
+        $this->checkorderApply($data['item'], $data);
+
         ksort($data);
         $send_data = [
             'data'      => json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
@@ -258,5 +260,20 @@ class Client extends BaseClient
         $this->setParams($send_data);
 
         var_dump($this->httpPostJson('shop/bdd/cb/order'));
+    }
+
+    /**
+     * 定义验证器来校验现场速递订单信息.
+     */
+    public function checkorderApply($body, $head)
+    {
+        $price_sum = 0;
+        foreach ($body as $k => $v) {
+            $price_sum = $price_sum + $v['sellUnitPrice'] * $v['sellQty'];
+        }
+
+        if ($price_sum != $head['acturalPaid']) {
+            throw new ClientError('订单表体数据：商品价格之和与订单表体的商品价格不符');
+        }
     }
 }

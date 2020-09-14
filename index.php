@@ -62,7 +62,7 @@ $bankSrv = new BBCOrderService($ioc_con_app);
 $storeDisplay = new StoreDisplayService($ioc_con_app);
 
     $data = [
-        'merchId'               => '189',
+        'merchId'               => 'mhbs690141244434452480',
         'shopId'                => 'wbsp999219298345422848',
         'merchName'             => '中网科技',
         'thirdPartyMerchCode'   => '12',

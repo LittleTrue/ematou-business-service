@@ -80,9 +80,9 @@ class Client extends BaseClient
             if (!$this->credentialValidate->check($value)) {
                 throw new ClientError('订单表体配置' . $this->credentialValidate->getError());
             }
-
-            $this->checkOrderInfo($data['item'], $data);
         }
+
+        $this->checkOrderInfo($data['item'], $data);
 
         ksort($data);
         $send_data = [
