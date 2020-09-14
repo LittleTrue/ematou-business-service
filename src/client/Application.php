@@ -16,6 +16,7 @@ class Application extends Container
     protected $providers = [
         Base\ServiceProvider::class,
         OrderSubmit\ServiceProvider::class,
+        StoreDisplay\ServiceProvider::class,
     ];
 
     /**

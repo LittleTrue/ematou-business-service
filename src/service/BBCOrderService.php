@@ -26,12 +26,16 @@ class BBCOrderService
      * @throws ClientError
      * @throws \Exception
      */
-    public function submitOrder(array $infos)
+    public function submitOrder(array $infos, $key = '')
     {
         if (empty($infos)) {
             throw new ClientError('参数缺失', 1000001);
         }
 
-        return $this->_bbcOrderClient->submitOrder($infos);
+        if (empty($key)) {
+            throw new ClientError('密钥缺失', 1000001);
+        }
+
+        return $this->_bbcOrderClient->submitOrder($infos, $key);
     }
 }

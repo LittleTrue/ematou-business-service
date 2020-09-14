@@ -5,11 +5,12 @@ namespace EPort\EPortWmsClient\OrderSubmit;
 use EPort\EPortWmsClient\Application;
 use EPort\EPortWmsClient\Base\BaseClient;
 use EPort\EPortWmsClient\Base\Exceptions\ClientError;
+use EPort\EPortWmsClient\Base\MD5;
 
 /**
  * 订单导入API客户端.
  */
-class Client
+class Client extends BaseClient
 {
     /**
      * @var Application
@@ -18,33 +19,17 @@ class Client
 
     public function __construct(Application $app)
     {
-        // parent::__construct($app);
+        parent::__construct($app);
         $this->credentialValidate = $app['credential'];
     }
 
     /**
-     * ************************************   以下为旧示例
      * 提交订单.
      *
      * @throws ClientError
      */
-    public function submitOrder(array $infos)
+    public function submitOrder(array $data, $secret_key = '')
     {
-        //使用Credential验证参数
-        $this->credentialValidate->setRule(
-            [
-                'data'      => 'require',
-                'timestamp' => 'require',
-                'sign'      => 'require',
-            ]
-        );
-        //验证平台代码和电商代码
-        if (!$this->credentialValidate->check($infos)) {
-            throw new ClientError('主体配置' . $this->credentialValidate->getError());
-        }
-
-        $data = $infos['data'];
-
         $this->credentialValidate->setRule(
             [
                 'merchId'           => 'require|max:22',
@@ -77,16 +62,16 @@ class Client
                 'item'              => 'require|array',
             ]
         );
-        var_dump($this->credentialValidate->check($data));die();
+
         if (!$this->credentialValidate->check($data)) {
             throw new ClientError('订单信息' . $this->credentialValidate->getError());
         }
 
         $this->credentialValidate->setRule(
             [
-                'SKU'               => 'require|max:30',
-                'sellUnitPrice'     => 'require|max:23|float',
-                'sellQty'           => 'require|int',
+                'SKU'           => 'require|max:30',
+                'sellUnitPrice' => 'require|max:23|float',
+                'sellQty'       => 'require|int',
             ]
         );
 
@@ -99,9 +84,22 @@ class Client
             $this->checkOrderInfo($data['item'], $data);
         }
 
-        // $this->setParams($infos);
+        ksort($data);
+        $send_data = [
+            'data'      => json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'timestamp' => time(),
+            'merchId'   => $data['merchId'],
+        ];
 
-        // return $this->httpPostJson('/bds/order');
+        //获取签名
+        $md5_sign          = new MD5();
+        $sign_string       = $md5_sign->MD5Sign($send_data, $secret_key);
+        $send_data['sign'] = $sign_string;
+        var_dump($send_data);
+
+        $this->setParams($send_data);
+
+        var_dump($this->httpPostJson('bds/order'));
     }
 
     /**
@@ -109,17 +107,13 @@ class Client
      */
     public function checkOrderInfo($body, $head)
     {
-        // if (array_sum([$head['Ordergoodtotal'], $head['Freight'], $head['Discount'], $head['Tax']]) != $head['ActuralPaid']) {
-        //     throw new ClientError('订单表头数据：实际支付金额与订单记录不符');
-        // }
+        $price_sum = 0;
+        foreach ($body as $k => $v) {
+            $price_sum = $price_sum + $v['sellUnitPrice'] * $v['sellQty'];
+        }
 
-        // $price_sum = 0;
-        // foreach ($body as $k => $v) {
-        //     $price_sum = $price_sum + $v['sellUnitPrice'] * $v['sellQty'];
-        // }
-
-        // if ($price_sum != $head['Ordergoodtotal']) {
-        //     throw new ClientError('订单表体数据：商品价格之和与订单表体的商品价格不符');
-        // }
+        if ($price_sum != $head['acturalPaid']) {
+            throw new ClientError('订单表体数据：商品价格之和与订单表体的商品价格不符');
+        }
     }
 }
