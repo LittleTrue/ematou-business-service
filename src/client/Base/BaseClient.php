@@ -21,31 +21,25 @@ class BaseClient
     /**
      * @var array
      */
-    protected $json = [];
+    protected $params = [];
 
     /**
      * @var string
      */
     protected $uri = '';
 
-    /**
-     * @var string
-     */
-    protected $language = 'zh-cn';
-
     public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->baseUri = $this->app['config']->get('base_uri');
     }
 
     /**
-     * Set json params.
-     *
-     * @param array $json Json参数
+     * Set params.
      */
-    public function setParams(array $json)
+    public function setParams(array $params)
     {
-        $this->json = $json;
+        $this->params = $params;
     }
 
     /**
@@ -57,25 +51,23 @@ class BaseClient
     }
 
     /**
-     * Set Headers Language params.
-     *
-     * @param string $language 请求头中的语种标识
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-    }
-
-    /**
-     * Make a get request.
+     * Make a patch request.
      *
      * @throws ClientError
      */
-    public function httpGet($uri, array $options = [])
+    public function httpPatchJson()
     {
-        $options = $this->_headers($options);
+        return $this->requestPatch();
+    }
 
-        return $this->request('GET', $uri, $options);
+    /**
+     * Make a Put request.
+     *
+     * @throws ClientError
+     */
+    public function httpPutJson()
+    {
+        return $this->requestPut();
     }
 
     /**
@@ -83,47 +75,61 @@ class BaseClient
      *
      * @throws ClientError
      */
-    public function httpPostJson($uri)
+    public function httpPostJson()
     {
-        return $this->requestPost($uri, [RequestOptions::JSON => $this->json]);
+        return $this->requestPost();
+    }
+
+    /**
+     * Make a get request.
+     * @throws ClientError
+     */
+    public function httpGet()
+    {
+        return $this->requestGet();
     }
 
     /**
      * @throws ClientError
      */
-    protected function requestPost($uri, array $options = [])
+    protected function requestPatch()
     {
-        $options = $this->_headers($options);
+        $options[RequestOptions::JSON] = $this->app['md5']->getRequestParams($this->params);
+        $options[RequestOptions::HEADERS] = $this->app['md5']->getRequestHeaders();
 
-        return $this->request('POST', $uri, $options);
+        return $this->request('PATCH', $this->uri, $options);
     }
 
     /**
      * @throws ClientError
      */
-    protected function postData($data)
+    protected function requestPut()
     {
-        $options[RequestOptions::JSON]    = $this->app['md5']->getRequestParams($data);
+        $options[RequestOptions::JSON] = $this->app['md5']->getRequestParams($this->params);
+        $options[RequestOptions::HEADERS] = $this->app['md5']->getRequestHeaders();
+
+        return $this->request('PUT', $this->uri, $options);
+    }
+
+    /**
+     * @throws ClientError
+     */
+    protected function requestPost()
+    {
+        $options[RequestOptions::JSON] = $this->app['md5']->getRequestParams($this->params);
         $options[RequestOptions::HEADERS] = $this->app['md5']->getRequestHeaders();
 
         return $this->request('POST', $this->uri, $options);
     }
 
     /**
-     * set Headers.
-     *
-     * @return array
+     * @throws ClientError
      */
-    private function _headers(array $options = [])
+    protected function requestGet()
     {
-        $time = time();
+        $options[RequestOptions::JSON] = $this->app['md5']->getRequestParams($this->params);
+        $options[RequestOptions::HEADERS] = $this->app['md5']->getRequestHeaders();
 
-        $options[RequestOptions::HEADERS] = [
-            'Content-Type' => 'application/json',
-            'timestamp'    => $time,
-            // 'Account'      => $this->app['config']->get('Account'),
-            // 'Password'     => $this->app['config']->get('Password'),
-        ];
-        return $options;
+        return $this->request('GET', $this->uri, $options);
     }
 }

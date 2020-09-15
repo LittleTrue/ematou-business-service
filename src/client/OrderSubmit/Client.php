@@ -88,7 +88,9 @@ class Client extends BaseClient
 
         $this->setUri('bds/order');
 
-        $result = $this->postData($data);
+        $this->setParams($data);
+
+        $result = $this->requestPost();
 
         if (0 != $result['code']) {
             throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
