@@ -9,51 +9,51 @@ use EPort\EPortWmsService\StoreDisplayService;
 $ioc_con_app = new Application([
     'BaseUri'   => 'http://wstest.ds-bay.com/al/',
     'secretKey' => 'hzxCjtGlY9d5AJj9',
-    'merchId'   => 'mhbs690141244434452480',
+    'merchId'   => 'mhbs996643550862512128',
 ]);
 
 //-----------------------------------------------------------------------------------
 //订单导入服务-----
 //-----------------------------------------------------------------------------------
-$bankSrv = new BBCOrderService($ioc_con_app);
+// $bankSrv = new BBCOrderService($ioc_con_app);
 
-$data = [
-    'merchOrderId'      => '202009101518',
-    'buyerIdType'       => '1',
-    'buyerIdCode'       => '440583199705234511',
-    'buyerName'         => '陈子安',
-    'buyerTel'          => '15013000000',
-    'payerIdType'       => '1',
-    'payerIdCode'       => '',
-    'payerName'         => '陈子安',
-    'payerMob'          => '15013000000',
-    'consigneeIdType'   => '1',
-    'consigneeIdCode'   => '440583199705234511',
-    'consigneeName'     => '陈子安',
-    'consigneeMob'      => '15013000000',
-    'consigneeTel'      => '15013000000',
-    'consigneeProvince' => '广东省',
-    'consigneeCity'     => '汕头市',
-    'consigneeDistrict' => '金平区',
-    'consigneeAddress'  => '1号',
-    'acturalPaid'       => '199',
-    'payTime'           => '2020-09-10 15:20:10',
-    'exprAgreementType' => '00',
-    'exprType'          => '00',
-    'exprCompId'        => 'yto',
-    'buyerBillTime'     => '2020-09-10 15:20:10',
-    'declExprFee'       => '0',
-    'declPostTax'       => '0',
-    'item'              => [
-        [
-            'sku'           => 'SKU000001',
-            'sellUnitPrice' => '199',
-            'sellQty'       => '1',
-        ],
-    ],
-];
+// $data = [
+//     'merchOrderId'      => '202009101518',
+//     'buyerIdType'       => '1',
+//     'buyerIdCode'       => '440583199705234511',
+//     'buyerName'         => '陈子安',
+//     'buyerTel'          => '15013000000',
+//     'payerIdType'       => '1',
+//     'payerIdCode'       => '',
+//     'payerName'         => '陈子安',
+//     'payerMob'          => '15013000000',
+//     'consigneeIdType'   => '1',
+//     'consigneeIdCode'   => '440583199705234511',
+//     'consigneeName'     => '陈子安',
+//     'consigneeMob'      => '15013000000',
+//     'consigneeTel'      => '15013000000',
+//     'consigneeProvince' => '广东省',
+//     'consigneeCity'     => '汕头市',
+//     'consigneeDistrict' => '金平区',
+//     'consigneeAddress'  => '1号',
+//     'acturalPaid'       => '199',
+//     'payTime'           => '2020-09-10 15:20:10',
+//     'exprAgreementType' => '00',
+//     'exprType'          => '00',
+//     'exprCompId'        => 'yto',
+//     'buyerBillTime'     => '2020-09-10 15:20:10',
+//     'declExprFee'       => '0',
+//     'declPostTax'       => '0',
+//     'item'              => [
+//         [
+//             'sku'           => 'SKU000001',
+//             'sellUnitPrice' => '199',
+//             'sellQty'       => '1',
+//         ],
+//     ],
+// ];
 
-print_r($bankSrv->submitOrder($data));
+// print_r($bankSrv->submitOrder($data));
 
 //-----------------------------------------------------------------------------------
 //门店保税展示现场速递进货申请单接口
@@ -85,15 +85,15 @@ $data = [
     'billTime'              => '2018-03-01 03:49:08',
     'item'                  => [
         [
-            'sku'        => 'ISZWKJ004915',
+            'sku'        => 'ISSFYX0000132',
             'goodsPrice' => '7.95',
             'goodsNum'   => '3',
         ],
     ],
 ];
 
-// print_r($storeDisplay->purchaseApply($data));
-
+print_r($storeDisplay->purchaseApply($data));
+die();
 //-----------------------------------------------------------------------------------
 //门店保税展示现场速递货品转移申请单接口
 //-----------------------------------------------------------------------------------
