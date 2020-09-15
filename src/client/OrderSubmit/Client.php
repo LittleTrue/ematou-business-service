@@ -57,6 +57,8 @@ class Client extends BaseClient
                 'buyerBillTime'     => 'require|max:32',
                 'declExprFee'       => 'require|max:20|float',
                 'declPostTax'       => 'require|max:20|float',
+                'cusOrderSucceeded' => 'require|max:1|in:0,1',
+                'paySucceeded'      => 'require|max:1|in:0',
                 'item'              => 'require|array',
             ]
         );

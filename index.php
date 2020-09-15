@@ -9,7 +9,7 @@ use EPort\EPortWmsService\StoreDisplayService;
 $ioc_con_app = new Application([
     'BaseUri'   => 'http://wstest.ds-bay.com/al/',
     'secretKey' => 'hzxCjtGlY9d5AJj9',
-    'merchId'   => 'mhbs690141244434452480',
+    'merchId'   => 'mhbs996643550862512129',
 ]);
 
 //-----------------------------------------------------------------------------------
@@ -20,18 +20,18 @@ $bankSrv = new BBCOrderService($ioc_con_app);
 $data = [
     'merchOrderId'      => '202009101518',
     'buyerIdType'       => '1',
-    'buyerIdCode'       => '440583199705234511',
+    'buyerIdCode'       => '440183199809293733',
     'buyerName'         => '陈子安',
-    'buyerTel'          => '15013000000',
+    'buyerTel'          => '13022076770',
     'payerIdType'       => '1',
-    'payerIdCode'       => '',
+    'payerIdCode'       => '440183199809293733',
     'payerName'         => '陈子安',
-    'payerMob'          => '15013000000',
+    'payerMob'          => '13022076770',
     'consigneeIdType'   => '1',
     'consigneeIdCode'   => '440583199705234511',
     'consigneeName'     => '陈子安',
-    'consigneeMob'      => '15013000000',
-    'consigneeTel'      => '15013000000',
+    'consigneeMob'      => '13022076770',
+    'consigneeTel'      => '',
     'consigneeProvince' => '广东省',
     'consigneeCity'     => '汕头市',
     'consigneeDistrict' => '金平区',
@@ -44,16 +44,18 @@ $data = [
     'buyerBillTime'     => '2020-09-10 15:20:10',
     'declExprFee'       => '0',
     'declPostTax'       => '0',
+    'cusOrderSucceeded' => '0',
+    'paySucceeded'      => '0',
     'item'              => [
         [
-            'sku'           => 'SKU000001',
+            'sku'           => 'ISSFYX0000132',
             'sellUnitPrice' => '199',
             'sellQty'       => '1',
         ],
     ],
 ];
 
-print_r($bankSrv->submitOrder($data));
+// print_r($bankSrv->submitOrder($data));
 
 //-----------------------------------------------------------------------------------
 //门店保税展示现场速递进货申请单接口
@@ -61,10 +63,8 @@ print_r($bankSrv->submitOrder($data));
 $storeDisplay = new StoreDisplayService($ioc_con_app);
 
 $data = [
-    'shopId'                => 'wbsp999219298345422848',
+    'shopId'                => 'wbsp722125006189940736',
     'merchName'             => '中网科技',
-    'thirdPartyMerchCode'   => '12',
-    'thirdPartyMerchName'   => 'zyl421',
     'sinGoodsDocSn'         => '2018042413364444675',
     'bondedCode'            => '060100',
     'wareCode'              => 'qhbsq',
@@ -85,7 +85,7 @@ $data = [
     'billTime'              => '2018-03-01 03:49:08',
     'item'                  => [
         [
-            'sku'        => 'ISZWKJ004915',
+            'sku'        => 'ISSFYX0000067',
             'goodsPrice' => '7.95',
             'goodsNum'   => '3',
         ],
@@ -100,19 +100,17 @@ $data = [
 $storeDisplay = new StoreDisplayService($ioc_con_app);
 
 $data = [
-    'shopId'              => 'wbsp999219298345422848',
-    'merchName'           => '中网科技',
-    'thirdPartyMerchCode' => '12',
-    'thirdPartyMerchName' => 'zyl421',
-    'merchReturnDocSn'    => '2019051513364444675',
-    'cusCode'             => '06',
-    'bondedCode'          => '060100',
-    'wareCode'            => 'qhbsq',
-    'grossWeight'         => 4.3,
-    'billTime'            => '2018-03-01 03:49:08',
-    'item'                => [
+    'shopId'           => 'wbsp722125006189940736',
+    'merchName'        => '中网科技',
+    'merchReturnDocSn' => '2019051513364444675',
+    'cusCode'          => '06',
+    'bondedCode'       => '060100',
+    'wareCode'         => 'qhbsq',
+    'grossWeight'      => 4.3,
+    'billTime'         => '2018-03-01 03:49:08',
+    'item'             => [
         [
-            'sku'      => 'ISZWKJ004915',
+            'sku'      => 'ISSFYX0000132',
             'goodsNum' => 3,
             'ctnNo'    => '45',
         ],
@@ -127,16 +125,14 @@ $data = [
 $storeDisplay = new StoreDisplayService($ioc_con_app);
 
 $data = [
-    'merchName'           => '中网科技',
-    'thirdPartyMerchCode' => '12',
-    'thirdPartyMerchName' => 'zyl421',
-    'merchTransDocSn'     => '2018042413364444675',
-    'rollOutShopId'       => 'wbsp999219298345422848',
-    'rollInShopId'        => 'wbsp999219298345422848',
-    'billTime'            => '2018-03-01 03:49:08',
-    'item'                => [
+    'merchName'       => '中网科技',
+    'merchTransDocSn' => '2018042413364444675',
+    'rollOutShopId'   => 'wbsp722125006189940736',
+    'rollInShopId'    => 'wbsp722125006189940736',
+    'billTime'        => '2018-03-01 03:49:08',
+    'item'            => [
         [
-            'sku'      => 'ISZWKJ004915',
+            'sku'      => 'ISSFYX0000133',
             'wareCode' => 'qhbsq',
             'goodsNum' => 3,
         ],
@@ -150,9 +146,7 @@ $data = [
 $storeDisplay = new StoreDisplayService($ioc_con_app);
 
 $data = [
-    'shopId'                => 'wbsp983589990844100608',
-    'thirdPartyMerchCode'   => '',
-    'thirdPartyMerchName'   => '',
+    'shopId'                => 'wbsp722125006189940736',
     'merchName'             => null,
     'merchOrderId'          => '20171154112341815465',
     'buyerIdType'           => '1',
@@ -200,7 +194,7 @@ $data = [
     'transMode'             => '20',
     'item'                  => [
         [
-            'sku'           => 'ISZWKJ004907',
+            'sku'           => 'ISSFYX0000132',
             'sellUnitPrice' => 34.23000,
             'sellQty'       => 1,
         ],
