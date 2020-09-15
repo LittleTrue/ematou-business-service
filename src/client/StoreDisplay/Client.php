@@ -66,7 +66,9 @@ class Client extends BaseClient
 
         $this->setUri('shop/bdd/cb/ingoods');
 
-        $result = $this->postData($data);
+        $this->setParams($data);
+
+        $result = $this->requestPost();
 
         if (0 != $result['code']) {
             throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
@@ -115,7 +117,9 @@ class Client extends BaseClient
 
         $this->setUri('shop/bdd/cb/returngoods');
 
-        $result = $this->postData($data);
+        $this->setParams($data);
+
+        $result = $this->requestPost();
 
         if (0 != $result['code']) {
             throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
@@ -162,7 +166,9 @@ class Client extends BaseClient
 
         $this->setUri('shop/bdd/cb/transgoods');
 
-        $result = $this->postData($data);
+        $this->setParams($data);
+
+        $result = $this->requestPost();
 
         if (0 != $result['code']) {
             throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
@@ -223,13 +229,15 @@ class Client extends BaseClient
             }
         }
 
-        $this->checkorderApply($data['item'], $data);
+        $this->checkOrderApply($data['item'], $data);
 
         $data['merchId'] = $this->app['config']->get('merchId');
 
         $this->setUri('shop/bdd/cb/order');
 
-        $result = $this->postData($data);
+        $this->setParams($data);
+
+        $result = $this->requestPost();
 
         if (0 != $result['code']) {
             throw new \Exception('接口业务异常回应:' . $result['msg'] . ' 错误码: ' . $result['code']);
@@ -241,7 +249,7 @@ class Client extends BaseClient
     /**
      * 定义验证器来校验现场速递订单信息.
      */
-    public function checkorderApply($body, $head)
+    public function checkOrderApply($body, $head)
     {
         $price_sum = 0;
         foreach ($body as $k => $v) {
